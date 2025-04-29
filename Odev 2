@@ -1,0 +1,41 @@
+package day08_BasicAuthentication_Cookies_Faker;
+
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import utilities.TestBase;
+
+public class Odev extends TestBase {
+    @Test
+    public void frameIleMetinGirme() {
+        driver.get("https://www.globalsqa.com/demo-site/frames-and-windows/");
+
+        // Öncelikle iframe'lerin olduğu bölüme gidelim (eğer direkt ilk frame değilse)
+        // Sayfadaki "iFrame" sekmesine tıklayalım
+        WebElement iframeSekmesi = driver.findElement(By.id("iFrame"));
+        iframeSekmesi.click();
+
+        // Locate the iframe element. Sayfadaki ilk iframe olduğunu varsayıyoruz.
+        // Daha güvenilir bir yöntem için name, id veya başka bir attribute ile locate etmek önemlidir.
+        WebElement iframeElement = driver.findElement(By.xpath("//iframe[@name='globalSqa']"));
+
+        // Şimdi iframe'e geçiş yapalım
+        driver.switchTo().frame(iframeElement);
+
+        // iframe içindeki metin kutusunu locate edip bir değer girelim
+        WebElement nameTextBox = driver.findElement(By.id("name"));
+        nameTextBox.sendKeys("Selenium ile Giriş");
+
+        // Mesaj kutusunu da bulup bir mesaj yazalım
+        WebElement messageTextBox = driver.findElement(By.id("comment"));
+        messageTextBox.sendKeys("Frame içinden gönderilen mesaj!");
+
+        // Ana sayfaya geri dönelim
+        driver.switchTo().defaultContent();
+
+        // İsteğe bağlı olarak ana sayfada bir assertion yapabilirsiniz
+        String anaSayfaBasligi = driver.getTitle();
+        System.out.println("Ana sayfa başlığı: " + anaSayfaBasligi);
+        // Assert.assertEquals("Expected Title", anaSayfaBasligi);
+    }
+}
